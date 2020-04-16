@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,10 +47,10 @@ public class ProductController {
 
     @GetMapping("/")
     public ResponseEntity<List<Product>> findAllBy() {
-        int max = configuration.provideQueryResultLimit();
+        final int max = configuration.provideQueryResultLimit();
 
-        Pageable limit = PageRequest.of(0, max);
-        List<Product> allProducts = productService.getAllProducts(limit);
+        final Pageable limit = PageRequest.of(0, max);
+        final List<Product> allProducts = productService.getAllProducts(limit);
 
         return new ResponseEntity<>(allProducts, HttpStatus.OK);
     }
@@ -78,6 +79,21 @@ public class ProductController {
             product.updateProductInfo(request.name.get(), request.price.get());
 
             return new ResponseEntity<>(product, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping(value = "/{id}")
+    @CacheEvict(value = "products")
+    @Transactional
+    public ResponseEntity<Void> softDeleteProduct(@PathVariable(value = "id") final Long id) {
+        final Optional<Product> productOptional = productService.findById(id);
+        if (productOptional.isPresent()) {
+            final Product product = productOptional.get();
+            product.softDelete();
+
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

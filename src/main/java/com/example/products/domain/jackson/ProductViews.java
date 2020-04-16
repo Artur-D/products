@@ -12,9 +12,12 @@ public final class ProductViews  {
         ExceptionUtils.throwUnsupportedOperation("ERR_20200416212350567", log);
     }
 
-    public interface ValueObjects extends DomainEntityViews.ValueObjects, Name, Price {}
+    public interface ValueObjects extends DomainEntityViews.ValueObjects, Name, Price, Status {}
 
     public interface Name {}
 
     public interface Price {}
+
+    public interface Status {
+    }
 }

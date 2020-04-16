@@ -56,6 +56,19 @@ public class Product extends DomainEntity<Long> {
         this.status = Status.UPDATED;
     }
 
+    public void softDelete() {
+        if (!isDeletable()) {
+            ExceptionUtils.throwIllegalState("ERR_20200417000041191", log);
+        }
+
+        this.status = Status.DELETED;
+    }
+
+    @Transient
+    private boolean isDeletable() {
+        return status != Status.DELETED;
+    }
+
     @Transient
     private boolean isUpdatable() {
         return status != Status.DELETED;
@@ -81,7 +94,7 @@ public class Product extends DomainEntity<Long> {
         this.price = price;
     }
 
-    @JsonIgnore
+    @JsonView(ProductViews.Status.class)
     private Status getStatus() {
         return status;
     }
