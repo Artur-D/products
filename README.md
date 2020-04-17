@@ -30,13 +30,15 @@ Produces JSON:
         "id": 1,
         "createdAt": "2020-04-16T23:11:55.031",
         "name": "Name1",
-        "price": 20.21
+        "price": 20.21,
+        "status": "DELETED"
     },
     {
         "id": 2,
         "createdAt": "2020-04-16T23:11:55.964",
         "name": "Name667",
-        "price": 667.21
+        "price": 667.21,
+        "status": "UPDATED"
     }
 ]
 ```
@@ -59,7 +61,8 @@ Produces JSON:
     "id": 1,
     "createdAt": "2020-04-16T23:11:56.471",
     "name": "Name1",
-    "price": 12.21
+    "price": 12.21,
+    "status": "CREATED"
 }
 ```
 
@@ -81,7 +84,8 @@ Produces JSON:
     "id": 1,
     "createdAt": "2020-04-16T23:11:56.471",
     "name": "Name1",
-    "price": 333.21
+    "price": 333.21,
+    "status": "UPDATED"
 }
 ```
 
